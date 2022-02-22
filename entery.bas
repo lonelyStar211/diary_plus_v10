@@ -38,13 +38,22 @@ End Type
 
 'APPEND TO the STRING array the STRING item
 SUB sAppend(arr() AS STRING , Item AS STRING)
+	'if the array is empty make it start as the lbound index not ubound (or 0 or 1, whatever...)
+	var iUbound = iif( ubound(arr)<lbound(arr) , lbound(arr) , ubound(arr) )  
+	
 	REDIM PRESERVE arr(LBOUND(arr) TO UBOUND(arr) + 1) AS STRING
 	arr(UBOUND(arr)) = Item
 END SUB
 'APPEND TO the long array the long item
 SUB nAppend(arr() as feelingRateDate , Item AS long, item2 as string)
-	REDIM PRESERVE arr(LBOUND(arr) TO UBOUND(arr) + 1) AS feelingRateDate
+	
+	'if the array is empty make it start as the lbound index not ubound (or 0 or 1, whatever...)
+	var iUbound = iif( ubound(arr)<lbound(arr) , lbound(arr) , ubound(arr) )  
+	
+	REDIM PRESERVE arr(LBOUND(arr) TO iUbound+1) AS feelingRateDate  
+	
 	arr(UBOUND(arr)).rate = Item
-	arr(UBOUND(arr)).dt = Item2
+	
+	arr(UBOUND(arr)).dt = Item2	
 	
 END SUB

@@ -171,6 +171,7 @@ function calc_avg(arr() as feelingRateDate) as LONG
 End Function
 
 function max_feeling(arr() as feelingRateDate) as string
+	if ubound(arr) < 1 then return "no data"
 	dim max_feeling_rate_date as feelingRateDate = arr(1)
 	for i as INTEGER = 1 to ubound(arr)
 		if arr(i).rate > max_feeling_rate_date.rate then
@@ -183,6 +184,7 @@ function max_feeling(arr() as feelingRateDate) as string
 End Function
 
 function min_feeling(arr() as feelingRateDate) as STRING
+	if ubound(arr) < 1 then return "no data"
 	dim min_feeling_rate_date as feelingRateDate = arr(1)
 	for i as integer = 1 to ubound(arr)
 		if arr(i).rate < min_feeling_rate_date.rate then
@@ -192,7 +194,7 @@ function min_feeling(arr() as feelingRateDate) as STRING
 	return str(min_feeling_rate_date.rate) & " date: " & min_feeling_rate_date.dt
 End Function
 
-FUNCTION callback CDECL (BYVAL NotUsed AS ANY PTR, BYVAL argc AS INTEGER, BYVAL argv AS zstring PTR PTR, BYVAL colName AS zstring PTR PTR) AS INTEGER
+FUNCTION callback CDECL (BYVAL NotUsed AS ANY PTR, BYVAL argc AS long, BYVAL argv AS zstring PTR PTR, BYVAL colName AS zstring PTR PTR) AS Long
 	DIM AS INTEGER i
 	DIM AS STRING text
 	? "ARGC:", argc
@@ -290,8 +292,8 @@ SUB Button_Save_Event CDECL (widget AS FL_Widget PTR)
 	dim as string cmd
 	
 	'These SQL statements create a Cars table and fill it with data. The statements must be separated by semicolons.
-	cmd = !"CREATE TABLE IF NOT EXISTS diary_table1(Id INTEGER PRIMARY KEY AUTOINCREMENT, dt datetime default current_timestamp, diary TEXT, thought TEXT, feel1 TEXT, feel2 TEXT, feel3 TEXT, feel4 TEXT, feel5 TEXT, feel6 TEXT, rate1 INT, rate2 INT,rate3 INT, rate4 INT, rate5 INT, rate6 INT ); " 
-	cmd &= !"INSERT INTO diary_table1(diary,thought,feel1,feel2,feel3,feel4,feel5,feel6,rate1,rate2,rate3,rate4,rate5,rate6) VALUES('" & entery.action &"','"& entery.thought & "','" & entery.feeling(0)& "','" & entery.feeling(1) & "','" & entery.feeling(2) & "','" & entery.feeling(3) &"' ,'" & entery.feeling(4) & "','" &  entery.feeling(5) & "'," & entery.rate(0) & "," & entery.rate(1) & "," & entery.rate(2) & "," & entery.rate(3) & "," & entery.rate(4) & "," & entery.rate(5) & "); "
+	cmd = "CREATE TABLE IF NOT EXISTS diary_table1(Id INTEGER PRIMARY KEY AUTOINCREMENT, dt datetime default current_timestamp, diary TEXT, thought TEXT, feel1 TEXT, feel2 TEXT, feel3 TEXT, feel4 TEXT, feel5 TEXT, feel6 TEXT, rate1 INT, rate2 INT,rate3 INT, rate4 INT, rate5 INT, rate6 INT ); " 
+	cmd &= "INSERT INTO diary_table1(diary,thought,feel1,feel2,feel3,feel4,feel5,feel6,rate1,rate2,rate3,rate4,rate5,rate6) VALUES('" & entery.action &"','"& entery.thought & "','" & entery.feeling(0)& "','" & entery.feeling(1) & "','" & entery.feeling(2) & "','" & entery.feeling(3) &"' ,'" & entery.feeling(4) & "','" &  entery.feeling(5) & "'," & entery.rate(0) & "," & entery.rate(1) & "," & entery.rate(2) & "," & entery.rate(3) & "," & entery.rate(4) & "," & entery.rate(5) & "); "
 	print cmd
 	dim as zstring ptr sql = strptr(cmd)
 	
